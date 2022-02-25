@@ -22,7 +22,7 @@ We provide an example run in `main.py` based on predictions of a graph
 generative model and the graphs in the corresponding test set. To run
 this, execute the following code from the main directory.
 
-```bash
+```bash  
 cd src
 poetry run python main.py
 ```
@@ -37,7 +37,7 @@ Please consider citing our work:
 	  title={Evaluation Metrics for Graph Generative Models: Problems, Pitfalls, and Practical Solutions},
 	  author={Leslie O'Bray and Max Horn and Bastian Rieck and Karsten Borgwardt},
 	  booktitle={International Conference on Learning Representations},
-  	year={2022},
-  	url={https://openreview.net/forum?id=tBtoZYKd9n}
+    year={2022},
+    url={https://openreview.net/forum?id=tBtoZYKd9n}
 }
 ```

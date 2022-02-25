@@ -22,7 +22,7 @@ We provide an example run in `main.py` based on predictions of a graph
 generative model and the graphs in the corresponding test set. To run
 this, execute the following code from the main directory.
 
-```bash  
+```shell  
 cd src
 poetry run python main.py
 ```

@@ -13,7 +13,7 @@ from utils import load_graphs, networkx_to_adj
 
 
 
-def perturb_graphs(graphs, perturbation_type, random_seed,
+def perturb_graphs(graphs, perturbation_type, random_seed=42,
         n_repetitions=1, **kwargs):
     """
     Take a list of networkx graphs as input and perturb them according
@@ -28,14 +28,15 @@ def perturb_graphs(graphs, perturbation_type, random_seed,
 
     Returns
     -------
-    perturbation_parameters: dictionary containing the perturbation parameter and values
+    perturbation_values: values of perturbation levels
     perturbed_graphs : a list of perturbed networkx graphs
     """
 
     random_state = np.random.RandomState(random_seed)
     parameters_for_perturbation = {}
     parameter_values = list(np.arange(0.15, 1.0, 0.05))
-    parameters = 'p_add'
+    parameters = 'p_add' # FIX ME. 
+    # TODO: add support for other types and addconnected edges
     print(parameter_values)
 
     perturbation_class = getattr(perturbations, perturbation_type)
@@ -58,7 +59,7 @@ def perturb_graphs(graphs, perturbation_type, random_seed,
 
         perturbed_graphs.append(cur_perturbation)
 
-    return(perturbation_parameters, perturbed_graphs)
+    return(parameter_values, perturbed_graphs)
 
 
     

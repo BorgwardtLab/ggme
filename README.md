@@ -32,12 +32,11 @@ poetry run python main.py
 Please consider citing our work: 
 
 ```bibtex
-@InProceedings{
-  o'bray2022evaluation,
-  title={Evaluation Metrics for Graph Generative Models: Problems, Pitfalls, and Practical Solutions},
-  author={Leslie O'Bray and Max Horn and Bastian Rieck and Karsten Borgwardt},
-  booktitle={International Conference on Learning Representations},
-  year={2022},
-  url={https://openreview.net/forum?id=tBtoZYKd9n}
+@inproceedings{obray2022evaluation,
+	title        = {Evaluation Metrics for Graph Generative Models: Problems, Pitfalls, and Practical Solutions},
+	author       = {Leslie O'Bray and Max Horn and Bastian Rieck and Karsten Borgwardt},
+	year         = 2022,
+	booktitle    = {International Conference on Learning Representations},
+	url          = {https://openreview.net/forum?id=tBtoZYKd9n}
 }
 ```

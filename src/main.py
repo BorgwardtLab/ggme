@@ -2,6 +2,7 @@
 
 from evaluate import evaluate_mmd
 from correlation import compute_correlation
+from correlation import select_kernel_and_hyperparameters
 
 from metrics.kernels import linear_kernel
 from metrics.kernels import laplacian_total_variation_kernel
@@ -18,18 +19,41 @@ from utils import load_graphs
 
 if __name__ == "__main__":
     
-    # take a set of graphs and perturb them
+    # take a set of graphs and perturb them for a given perturbation
     test_graphs = load_graphs("../data/test/CommunityGraphs.pickle")
-    
-    # take perturbed graphs and true graphs and calculate MMD
+
     perturbation_values, perturbed_graphs = perturb_graphs(
             graphs=test_graphs,
             perturbation_type="AddEdges"
             )
-    
+
+    # OPTION 1: to find the best parameters for a grid of kernel/hyperparameter
+    # combination, run the following function, which will return the
+    # kernel, sigma, and correlation of the best configuration
+    best_params = select_kernel_and_hyperparameters(
+        test_graphs=test_graphs,
+        perturbed_graphs=perturbed_graphs,
+        perturbation_values=perturbation_values,
+        kernels=[gaussian_kernel, linear_kernel],
+        sigmas=[0.1, 1, 10],
+        descriptor_fn=degree_distribution,
+        correlation_type="pearson"
+        )
+    print("Option 1:")
+    print("The best kernel-hyperparameter combination is the {} with sigma={}. This had a correlation of {:.4f}."
+        .format(
+        best_params["kernel"].__name__,
+        best_params["sigma"],
+        best_params["corr"]
+        ))
+    print("======================")
+
+    # OPTION 2: to compute the correlation between a single
+    # take perturbed graphs and true graphs and calculate MMD
+    # for each level of perturbation (provide a single kernel/sigma value)
     list_of_mmd = [evaluate_mmd(
-        graph_dist_1=test_graphs, 
-        graph_dist_2=graphs,
+        graphs_dist_1=test_graphs,
+        graphs_dist_2=graphs,
         function=degree_distribution,
         kernel=gaussian_kernel,
         use_linear_approximation=False,
@@ -37,26 +61,30 @@ if __name__ == "__main__":
         sigma=0.1
         ) for graphs in perturbed_graphs]
 
-    # compute correlation of mmd (should probably use fast
-    # mmd calculation?
-    best_kernel_params, mmd = compute_correlation(
+    correlation = compute_correlation(
             perturbation_values,
-            perturbed_graphs,
-            candidate_kernels=["tv", "gaussian", "linear"],
-            candidate_descriptor_functions=["degree", "clustering", "laplacian"],
-            candidate_sigma=[])
+            list_of_mmd,
+            correlation_type="pearson"
+            )
 
+    print("Option 2:")
+    print("The correlation is {:.6f}.".format(correlation))
+    print("======================")
 
-    # OR, just compute MMD between predicted graphs and perturbed graphs
+    # OPTION 3: just compute MMD between predicted graphs and perturbed graphs
     predicted_graphs = load_graphs("../data/predictions/CommunityGraphs.pickle")
     test_graphs = load_graphs("../data/test/CommunityGraphs.pickle")
-    
+
     mmd = evaluate_mmd(
-            graph_dist_1=test_graphs, 
-            graph_dist_2=predicted_graphs, 
+            graphs_dist_1=test_graphs,
+            graphs_dist_2=predicted_graphs,
             function=degree_distribution,
             kernel=gaussian_kernel,
             use_linear_approximation=False,
             density=True,
             sigma=0.1
             )
+
+    print("Option 3:")
+    print("The MMD between the test and predicted graphs is {:.4f}.".format(mmd))
+

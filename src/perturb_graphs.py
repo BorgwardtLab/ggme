@@ -35,9 +35,12 @@ def perturb_graphs(graphs, perturbation_type, random_seed=42,
     random_state = np.random.RandomState(random_seed)
     parameters_for_perturbation = {}
     parameter_values = list(np.arange(0.15, 1.0, 0.05))
-    parameters = 'p_add' # FIX ME. 
-    # TODO: add support for other types and addconnected edges
-    print(parameter_values)
+    if perturbation_type == "AddEdges":
+        parameters = 'p_add'
+    elif perturbation_type == "RemoveEdges":
+        parameters = 'p_remove'
+    elif perturbation_type == "RewireEdges":
+        parameters = 'p_rewire'
 
     perturbation_class = getattr(perturbations, perturbation_type)
     perturbed_graphs = []
@@ -52,7 +55,8 @@ def perturb_graphs(graphs, perturbation_type, random_seed=42,
             random_state=random_state, **perturbation_dict)
 
         def perturb_and_convert(graph):
-            return nx.to_scipy_sparse_matrix(perturbation(graph))
+            return(perturbation(graph))
+            # return nx.to_scipy_sparse_matrix(perturbation(graph))
 
         for _ in range(n_repetitions):
             cur_perturbation.extend(map(perturb_and_convert, graphs))

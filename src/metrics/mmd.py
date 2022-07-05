@@ -37,6 +37,8 @@ def mmd(X, Y, kernel, estimate_variance=False):
     `estimate_variance == True`, the estimate is returned,
     thus resulting in a tuple of `mmd, var`.
     """
+    np.warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)
+
     X = np.asarray(X)
     Y = np.asarray(Y)
 

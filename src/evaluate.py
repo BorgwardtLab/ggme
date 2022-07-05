@@ -1,6 +1,8 @@
 ''' Calculate MMD for a given kernel choice, parameter choice, and
 descriptor function choice '''
 
+import networkx as nx
+
 from metrics.mmd import mmd
 from metrics.mmd import mmd_linear_approximation
 
@@ -9,7 +11,7 @@ from metrics.kernels import KernelDistributionWrapper
 
 
 def evaluate_mmd(
-    graph_dist_1, graphs_dist_2, function, kernel,
+    graphs_dist_1, graphs_dist_2, function, kernel,
     use_linear_approximation=False,
     **kwargs
 ):

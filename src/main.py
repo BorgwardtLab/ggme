@@ -48,9 +48,9 @@ if __name__ == "__main__":
         ))
     print("======================")
 
-    # OPTION 2: to compute the correlation between a single
+    # OPTION 2: to compute the correlation for a single kernel/param combo,
     # take perturbed graphs and true graphs and calculate MMD
-    # for each level of perturbation (provide a single kernel/sigma value)
+    # for each level of perturbation (specify the kernel/sigma value)
     list_of_mmd = [evaluate_mmd(
         graphs_dist_1=test_graphs,
         graphs_dist_2=graphs,
@@ -71,7 +71,7 @@ if __name__ == "__main__":
     print("The correlation is {:.6f}.".format(correlation))
     print("======================")
 
-    # OPTION 3: just compute MMD between predicted graphs and perturbed graphs
+    # OPTION 3: just compute MMD between predicted graphs and test graphs
     predicted_graphs = load_graphs("../data/predictions/CommunityGraphs.pickle")
     test_graphs = load_graphs("../data/test/CommunityGraphs.pickle")
 
